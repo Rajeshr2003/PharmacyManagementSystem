@@ -1,0 +1,6 @@
+@Pharmacy.AuthService_HostAddress = http://localhost:5137
+
+GET {{Pharmacy.AuthService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

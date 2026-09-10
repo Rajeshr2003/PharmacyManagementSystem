@@ -1,0 +1,84 @@
+# Build results
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio Code
+.vscode/
+
+# Rider
+.idea/
+
+# Logs
+*.log
+
+# EF Core local database files
+*.db
+*.db-journal
+
+# NuGet
+*.nupkg
+packages/
+.nuget/
+
+# Test Results
+TestResults/
+coverage/
+coverage-report/
+
+# Publish folder
+publish/
+
+# Temporary files
+tmp/
+temp/
+
+# OS files
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# App settings containing secrets
+appsettings.Development.json
+
+# User Secrets
+secrets.json
+
+# IIS
+*.vspscc
+*.vssscc
+
+# Azure
+.publishsettings
+
+# Node modules (if frontend added later)
+node_modules/
+
+# Generated files
+Generated/
+wwwroot/lib/
+
+# Zip files
+*.zip
+
+# Environment files
+.env
+.env.*
+
+# SQL backups
+*.bak
+
+# Certificates
+*.pfx
+*.pem
+*.key
+
+# Coverage files
+*.coverage
+*.coveragexml

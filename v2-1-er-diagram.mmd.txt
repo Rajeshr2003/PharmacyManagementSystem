@@ -1,0 +1,115 @@
+erDiagram
+    ROLES ||--o{ USERS : has
+    USERS ||--o{ REFRESH_TOKENS : has
+    USERS ||--o{ PASSWORD_RESET_TOKENS : has
+
+    ROLES {
+        int id PK
+        string name "ADMIN or DOCTOR"
+    }
+
+    USERS {
+        int id PK
+        string name
+        string email UK
+        string password_hash
+        int role_id FK
+        datetime created_at
+    }
+
+    REFRESH_TOKENS {
+        int id PK
+        int user_id FK
+        string token_hash
+        datetime issued_at
+        datetime expires_at
+        datetime revoked_at
+    }
+
+    PASSWORD_RESET_TOKENS {
+        int id PK
+        int user_id FK
+        string token_hash
+        datetime expires_at
+        datetime used_at
+    }
+
+    PAYMENT_INTENTS ||--o| ORDERS : "results in (if paid)"
+
+    PAYMENT_INTENTS {
+        int id PK
+        int doctor_id "logical ref to UsersDB"
+        string razorpay_order_id
+        string razorpay_payment_id "null until payment completes"
+        decimal amount
+        string status "CREATED, PAID, FAILED, EXPIRED"
+        string items_snapshot "JSON - cart at initiation time"
+        datetime created_at
+        datetime updated_at
+    }
+
+    ORDERS ||--o{ ORDER_ITEMS : contains
+
+    ORDERS {
+        int id PK
+        int payment_intent_id FK "same DB, real FK"
+        int doctor_id "logical ref, no FK"
+        string doctor_name_snapshot
+        string status "NEW, VERIFIED, PICKED_UP, COMPLETED, CANCELLED"
+        decimal total_amount
+        datetime created_at
+        datetime verified_at
+        datetime picked_up_at
+        datetime completed_at
+        datetime cancelled_at
+        string cancelled_by "ADMIN or SYSTEM"
+    }
+
+    ORDER_ITEMS {
+        int id PK
+        int order_id FK
+        int drug_id "logical ref, no FK"
+        int quantity
+        decimal unit_price_at_order
+    }
+
+    SUPPLIERS ||--o{ DRUGS : supplies
+    DRUGS ||--o{ STOCK_RESERVATIONS : "reserved via"
+
+    SUPPLIERS {
+        int id PK
+        string name
+        string contact_info
+        string address
+    }
+
+    DRUGS {
+        int id PK
+        string name
+        decimal price
+        int quantity_in_stock
+        boolean is_active
+        int supplier_id FK
+    }
+
+    STOCK_RESERVATIONS {
+        int id PK
+        int payment_intent_id "logical ref to OrdersDB"
+        int drug_id FK "same DB"
+        int quantity
+        string status "ACTIVE, RELEASED, COMMITTED"
+        datetime reserved_at
+        datetime expires_at
+    }
+
+    SALES {
+        int id PK
+        int order_id UK "logical ref, no FK"
+        decimal amount
+        datetime sale_date
+    }
+
+    PROCESSED_EVENTS {
+        int order_id PK
+        datetime processed_at
+    }
