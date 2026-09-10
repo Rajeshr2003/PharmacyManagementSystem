@@ -1,10 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Pharmacy.InventoryService.Data;
-
+using Microsoft.AspNetCore.Authorization;
 namespace Pharmacy.InventoryService.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize(Roles = "Admin")]
 public class ReportsController : ControllerBase
 {
     private readonly InventoryDbContext _context;

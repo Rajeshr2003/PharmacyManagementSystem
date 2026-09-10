@@ -1,7 +1,7 @@
 using System.Net;
 using System.Text.Json;
 
-namespace Pharmacy.AuthService.Middleware;
+namespace Pharmacy.InventoryService.Middleware;
 
 public class GlobalExceptionMiddleware
 {

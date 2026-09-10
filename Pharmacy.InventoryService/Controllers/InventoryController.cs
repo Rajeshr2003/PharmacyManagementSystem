@@ -1,11 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Pharmacy.InventoryService.DTOs;
 using Pharmacy.InventoryService.Interfaces;
-
+using Microsoft.AspNetCore.Authorization;
 namespace Pharmacy.InventoryService.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class InventoryController : ControllerBase
 {
     private readonly IInventoryService _service;
@@ -15,6 +16,7 @@ public class InventoryController : ControllerBase
         _service = service;
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> AddMedicine(AddMedicineDto dto)
     {
@@ -23,6 +25,7 @@ public class InventoryController : ControllerBase
         return Ok(result);
     }
 
+    [Authorize(Roles = "Admin,Doctor")]
     [HttpGet]
     public async Task<IActionResult> GetAllMedicines()
     {
@@ -31,6 +34,7 @@ public class InventoryController : ControllerBase
         return Ok(result);
     }
 
+    [Authorize(Roles = "Admin,Doctor")]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetMedicineById(int id)
     {
@@ -42,6 +46,7 @@ public class InventoryController : ControllerBase
         return Ok(result);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateMedicine(
         int id,
@@ -55,6 +60,7 @@ public class InventoryController : ControllerBase
         return Ok(result);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteMedicine(int id)
     {
@@ -66,6 +72,7 @@ public class InventoryController : ControllerBase
         return NoContent();
     }
 
+    [Authorize(Roles = "Admin,Doctor")]
     [HttpGet("check/{id}/{quantity}")]
     public async Task<IActionResult> CheckStock(
     int id,
@@ -77,6 +84,7 @@ public class InventoryController : ControllerBase
         return Ok(available);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPut("reduce-stock/{id}/{quantity}")]
     public async Task<IActionResult> ReduceStock(
     int id,

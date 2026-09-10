@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Pharmacy.InventoryService.DTOs;
 using Pharmacy.InventoryService.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Pharmacy.InventoryService.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize(Roles = "Admin")]
 public class SupplierController : ControllerBase
 {
     private readonly ISupplierService _service;
