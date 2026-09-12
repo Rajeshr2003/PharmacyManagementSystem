@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Pharmacy.InventoryService.DTOs;
 using Pharmacy.InventoryService.Interfaces;
@@ -6,6 +7,7 @@ namespace Pharmacy.InventoryService.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize(Roles = "Admin")]
 public class SalesController : ControllerBase
 {
     private readonly ISalesService _service;

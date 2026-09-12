@@ -3,6 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Pharmacy.OrderService.Data;
 using System.Text;
+using Microsoft.OpenApi.Models;
+using Pharmacy.OrderService.Middleware;
+using Microsoft.Extensions.Options;
+using Pharmacy.OrderService.PaymentGateway;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +14,33 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Enter your JWT token."
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
 
 builder.Services.AddDbContext<OrdersDbContext>(options =>
     options.UseSqlServer(
@@ -38,6 +68,24 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 builder.Services.AddHttpClient();
+
+builder.Services.Configure<RazorpaySettings>(
+    builder.Configuration.GetSection("Razorpay"));
+
+var paymentGatewayType =
+    builder.Configuration["PaymentGateway"] ?? "Dummy";
+
+if (paymentGatewayType.Equals(
+        "Razorpay",
+        StringComparison.OrdinalIgnoreCase))
+{
+    builder.Services.AddHttpClient<IPaymentGateway, RazorpayPaymentGateway>();
+}
+else
+{
+    builder.Services.AddScoped<IPaymentGateway, DummyPaymentGateway>();
+}
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -47,7 +95,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseMiddleware<GlobalExceptionMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 

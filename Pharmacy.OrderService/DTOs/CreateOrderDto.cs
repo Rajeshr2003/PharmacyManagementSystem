@@ -1,9 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Pharmacy.OrderService.DTOs;
 
 public class CreateOrderDto
 {
-    public int UserId { get; set; }
-
-    public List<CreateOrderItemDto> Items { get; set; }
-        = new();
+    [Required]
+    [MinLength(1)]
+    public List<CreateOrderItemDto> Items { get; set; } = new();
 }

@@ -8,5 +8,5 @@ public class Sale
 
     public decimal Amount { get; set; }
 
-    public DateTime SaleDate { get; set; }
+    public DateTime SaleDate { get; set; } = DateTime.UtcNow;
 }

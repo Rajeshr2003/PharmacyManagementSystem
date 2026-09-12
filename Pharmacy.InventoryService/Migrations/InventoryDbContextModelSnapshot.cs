@@ -46,7 +46,7 @@ namespace Pharmacy.InventoryService.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Inventories");
+                    b.ToTable("Inventories", (string)null);
                 });
 
             modelBuilder.Entity("Pharmacy.InventoryService.Entities.Sale", b =>
@@ -68,7 +68,7 @@ namespace Pharmacy.InventoryService.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Sales");
+                    b.ToTable("Sales", (string)null);
                 });
 
             modelBuilder.Entity("Pharmacy.InventoryService.Entities.Supplier", b =>
@@ -93,7 +93,7 @@ namespace Pharmacy.InventoryService.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Suppliers");
+                    b.ToTable("Suppliers", (string)null);
                 });
 #pragma warning restore 612, 618
         }

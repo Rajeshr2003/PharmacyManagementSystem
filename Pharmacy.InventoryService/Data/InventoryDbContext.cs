@@ -11,7 +11,18 @@ public class InventoryDbContext : DbContext
     {
     }
 
-    public DbSet<Supplier> Suppliers { get; set; }
-    public DbSet<Sale> Sales { get; set; }
-    public DbSet<Inventory> Inventories { get; set; }
+    public DbSet<Supplier> Suppliers { get; set; } = null!;
+
+    public DbSet<Sale> Sales { get; set; } = null!;
+
+    public DbSet<Inventory> Inventories { get; set; } = null!;
+
+    // protected override void OnModelCreating(ModelBuilder modelBuilder)
+    // {
+    //     base.OnModelCreating(modelBuilder);
+
+    //     modelBuilder.Entity<Sale>()
+    //         .HasIndex(sale => sale.OrderId)
+    //         .IsUnique();
+    // }
 }
