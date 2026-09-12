@@ -1,21 +1,12 @@
+using System.ComponentModel.DataAnnotations;
 
 namespace Pharmacy.OrderService.DTOs;
 
 public class CreateOrderItemDto
 {
+    [Range(1, int.MaxValue)]
     public int ProductId { get; set; }
 
+    [Range(1, 1000000)]
     public int Quantity { get; set; }
 }
-
-
-// namespace Pharmacy.OrderService.DTOs;
-
-// public class CreateOrderItemDto
-// {
-//     public int ProductId { get; set; }
-
-//     public int Quantity { get; set; }
-
-//     public decimal UnitPrice { get; set; }
-// }

@@ -5,6 +5,8 @@ using Pharmacy.OrderService.Data;
 using System.Text;
 using Microsoft.OpenApi.Models;
 using Pharmacy.OrderService.Middleware;
+using Microsoft.Extensions.Options;
+using Pharmacy.OrderService.PaymentGateway;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -66,6 +68,24 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 builder.Services.AddHttpClient();
+
+builder.Services.Configure<RazorpaySettings>(
+    builder.Configuration.GetSection("Razorpay"));
+
+var paymentGatewayType =
+    builder.Configuration["PaymentGateway"] ?? "Dummy";
+
+if (paymentGatewayType.Equals(
+        "Razorpay",
+        StringComparison.OrdinalIgnoreCase))
+{
+    builder.Services.AddHttpClient<IPaymentGateway, RazorpayPaymentGateway>();
+}
+else
+{
+    builder.Services.AddScoped<IPaymentGateway, DummyPaymentGateway>();
+}
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
