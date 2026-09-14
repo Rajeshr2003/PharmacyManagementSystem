@@ -34,10 +34,12 @@ public class EmailService : IEmailService
 
         email.Subject = subject;
 
-        email.Body = new TextPart("plain")
-        {
-            Text = body
-        };
+        // email.Body = new TextPart("plain")
+        // {
+        //     Text = body
+        // };
+        var Body = new TextPart("plain");
+        Body.Text = body;
 
         using var smtp = new SmtpClient();
 

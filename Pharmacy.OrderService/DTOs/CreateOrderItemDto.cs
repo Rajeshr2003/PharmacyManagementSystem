@@ -8,5 +8,5 @@ public class CreateOrderItemDto
     public int ProductId { get; set; }
 
     [Range(1, 1000000)]
-    public int Quantity { get; set; }
+    public int Quantity { get; set; }  
 }
